@@ -25,28 +25,33 @@ class Crawler {
     required this.country,
   });
 
-  static Crawler fromJson(Map<String, dynamic> json) {
-    String crawlerFirstName = json['name']['first'] ?? '';
-    String crawlerLastName = json['name']['last'] ?? '';
+  static Crawler? fromJson(Map<String, dynamic> json) {
+    try {
+      String crawlerFirstName = json['name']['first'] ?? '';
+      String crawlerLastName = json['name']['last'] ?? '';
 
-    int randomNumber = CrawlerIdentificationService.generateCrawlerNumber();
-    String generatedName = CrawlerIdentificationService.generateCrawlerName(
-      crawlerFirstName,
-      crawlerLastName,
-      randomNumber,
-    );
+      int randomNumber = CrawlerIdentificationService.generateCrawlerNumber();
+      String generatedName = CrawlerIdentificationService.generateCrawlerName(
+        crawlerFirstName,
+        crawlerLastName,
+        randomNumber,
+      );
 
-    return Crawler(
-      crawlerName: generatedName,
-      crawlerNumber: randomNumber,
-      firstName: crawlerFirstName,
-      lastName: crawlerLastName,
-      isMale: json['gender'] == 'male',
-      imageUrl: json['picture']['large'] ?? '',
-      age: json['dob']['age'] ?? 25,
-      city: json['location']['city'] ?? '',
-      state: json['location']['state'] ?? '',
-      country: json['location']['country'] ?? '',
-    );
+      return Crawler(
+        crawlerName: generatedName,
+        crawlerNumber: randomNumber,
+        firstName: crawlerFirstName,
+        lastName: crawlerLastName,
+        isMale: json['gender'] == 'male',
+        imageUrl: json['picture']['large'] ?? '',
+        age: json['dob']['age'] ?? 25,
+        city: json['location']['city'] ?? '',
+        state: json['location']['state'] ?? '',
+        country: json['location']['country'] ?? '',
+      );
+    } catch (e) {
+      print('Error parsing Crawler from JSON: $e');
+      return null;
+    }
   }
 }

@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:dcc_rpg_crawler_generator/model/crawler.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:http/http.dart' as http;
 
 class RandomCrawlerPage extends StatefulWidget {
@@ -13,6 +14,16 @@ class RandomCrawlerPage extends StatefulWidget {
 
 class RandomCrawlerPageState extends State<RandomCrawlerPage> {
   Crawler? _crawler;
+  var formatter = NumberFormat.decimalPattern(
+    'en_US',
+  ); // TODO: get user region eventually
+
+  @override
+  void initState() {
+    super.initState();
+    _generateRandomCrawler();
+  }
+
   void _generateRandomCrawler() async {
     http.Response response = await http.get(
       Uri.parse('https://randomuser.me/api/'),
@@ -34,22 +45,65 @@ class RandomCrawlerPageState extends State<RandomCrawlerPage> {
     return Scaffold(
       body: Container(
         alignment: Alignment.center,
+        color: Colors.black,
         width: double.infinity,
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            Text('Random Crawler Page'),
+            Text(
+              'Random Crawler Generator',
+              style: Theme.of(
+                context,
+              ).textTheme.headlineLarge!.copyWith(color: Colors.amber),
+            ),
             if (_crawler != null)
               Column(
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
-                  Text(_crawler!.crawlerName),
-                  Text('#${_crawler!.crawlerNumber}'),
-                  Text('${_crawler!.firstName} ${_crawler!.lastName}'),
+                  Image.network(
+                    _crawler!.imageUrl,
+                    height: 200,
+                    width: 200,
+                    fit: BoxFit.fill,
+                  ),
+                  Text(
+                    _crawler!.crawlerName,
+                    style: Theme.of(context).textTheme.headlineLarge!.copyWith(
+                      fontWeight: FontWeight.bold,
+                      color: Colors.yellow,
+                    ),
+                  ),
+                  Text(
+                    '#${formatter.format(_crawler!.crawlerNumber)}',
+                    style: Theme.of(
+                      context,
+                    ).textTheme.headlineSmall!.copyWith(color: Colors.red),
+                  ),
+                  Text(
+                    '${_crawler!.firstName} ${_crawler!.lastName} ${_crawler!.age} ${_crawler!.isMale ? 'M' : 'F'}',
+                    style: Theme.of(
+                      context,
+                    ).textTheme.bodyLarge!.copyWith(color: Colors.grey),
+                  ),
+                  Text(
+                    '${_crawler!.city}, ${_crawler!.state}  ${_crawler!.country}',
+                    style: Theme.of(
+                      context,
+                    ).textTheme.bodyMedium!.copyWith(color: Colors.grey),
+                  ),
                 ],
               ),
-            IconButton(
+            SizedBox(height: 20),
+            TextButton.icon(
+              style: ButtonStyle(
+                backgroundColor: WidgetStateProperty.all<Color>(Colors.red),
+                foregroundColor: WidgetStateProperty.all<Color>(Colors.white),
+                textStyle: WidgetStateProperty.all<TextStyle>(
+                  Theme.of(context).textTheme.labelLarge!,
+                ),
+              ),
               icon: Icon(Icons.refresh),
+              label: Text('New Crawler'),
               onPressed: _generateRandomCrawler,
             ),
           ],
