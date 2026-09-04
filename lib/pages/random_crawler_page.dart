@@ -81,13 +81,13 @@ class RandomCrawlerPageState extends State<RandomCrawlerPage> {
                     ).textTheme.headlineSmall!.copyWith(color: Colors.red),
                   ),
                   Text(
-                    '${_crawler!.firstName} ${_crawler!.lastName} ${_crawler!.age} ${_crawler!.isMale ? 'M' : 'F'}',
+                    '${_crawler!.firstName} ${_crawler!.lastName} | ${_crawler!.age} ${_crawler!.isMale ? 'M' : 'F'}',
                     style: Theme.of(
                       context,
                     ).textTheme.bodyLarge!.copyWith(color: Colors.grey),
                   ),
                   Text(
-                    '${_crawler!.city}, ${_crawler!.state}  ${_crawler!.country}',
+                    '${_crawler!.state}, ${_crawler!.country}',
                     style: Theme.of(
                       context,
                     ).textTheme.bodyMedium!.copyWith(color: Colors.grey),
