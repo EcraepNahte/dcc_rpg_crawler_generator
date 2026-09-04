@@ -62,6 +62,7 @@ class RandomCrawlerPageState extends State<RandomCrawlerPage> {
                 children: [
                   Image.network(
                     _crawler!.imageUrl,
+                    webHtmlElementStrategy: WebHtmlElementStrategy.prefer,
                     height: 200,
                     width: 200,
                     fit: BoxFit.fill,
