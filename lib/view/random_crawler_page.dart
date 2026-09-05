@@ -57,6 +57,8 @@ class RandomCrawlerPageState extends State<RandomCrawlerPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       floatingActionButton: FloatingActionButton.extended(
+        backgroundColor: Colors.blueGrey,
+        foregroundColor: Colors.yellow,
         onPressed: _showFilterDrawer,
         label: const Text("Filters"),
         icon: const Icon(Icons.filter_list),

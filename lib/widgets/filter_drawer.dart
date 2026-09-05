@@ -13,71 +13,126 @@ class _FilterDrawerState extends State<FilterDrawer> {
   @override
   Widget build(BuildContext context) {
     return Consumer<FilterData>(
-      builder: (context, value, child) {
-        return Container(
-          color: Colors.black,
-          child: Padding(
-            padding: EdgeInsets.only(
-              bottom: MediaQuery.of(context).viewInsets.bottom + 20,
-              top: 20,
-              left: 20,
-              right: 20,
-            ),
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                const Text(
-                  'Filters',
-                  style: TextStyle(
-                    fontSize: 20,
-                    fontWeight: FontWeight.bold,
-                    color: Colors.yellow,
+      builder: (context, data, child) {
+        return SingleChildScrollView(
+          child: Container(
+            color: Colors.black,
+            child: Padding(
+              padding: EdgeInsets.only(
+                bottom: MediaQuery.of(context).viewInsets.bottom + 20,
+                top: 20,
+                left: 20,
+                right: 20,
+              ),
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  const Text(
+                    'Filters',
+                    style: TextStyle(
+                      fontSize: 20,
+                      fontWeight: FontWeight.bold,
+                      color: Colors.yellow,
+                    ),
                   ),
-                ),
-                const SizedBox(height: 20),
-                RadioGroup<int>(
-                  groupValue: value.genderOption,
-                  onChanged: (int? selected) {
-                    setState(() {
-                      value.setGender(selected);
-                    });
-                  },
-                  child: Column(
+                  Row(
                     children: [
-                      ListTile(
-                        title: const Text(
-                          'Male',
-                          style: TextStyle(color: Colors.red),
-                        ),
-                        leading: Radio<int>(
+                      const Text('Gender', style: TextStyle(color: Colors.red)),
+                      const SizedBox(width: 10),
+                      Expanded(
+                        child: Container(height: 1.0, color: Colors.red),
+                      ),
+                      const SizedBox(width: 10),
+                    ],
+                  ),
+                  RadioGroup<int>(
+                    groupValue: data.genderOption,
+                    onChanged: (int? selected) {
+                      setState(() {
+                        data.setGender(selected);
+                      });
+                    },
+                    child: Row(
+                      children: [
+                        Radio<int>(
                           value: 1,
-                          fillColor: WidgetStateProperty.all<Color>(Colors.red),
+                          fillColor: WidgetStateProperty.all<Color>(
+                            Colors.grey,
+                          ),
                         ),
-                      ),
-                      ListTile(
-                        title: const Text(
-                          'Female',
-                          style: TextStyle(color: Colors.red),
-                        ),
-                        leading: Radio<int>(
+                        Text('Male', style: TextStyle(color: Colors.grey)),
+                        SizedBox(width: 20),
+                        Radio<int>(
                           value: 2,
-                          fillColor: WidgetStateProperty.all<Color>(Colors.red),
+                          fillColor: WidgetStateProperty.all<Color>(
+                            Colors.grey,
+                          ),
                         ),
-                      ),
-                      ListTile(
-                        title: const Text(
-                          'Either',
-                          style: TextStyle(color: Colors.red),
-                        ),
-                        leading: Radio<int>(
+                        Text('Female', style: TextStyle(color: Colors.grey)),
+                        SizedBox(width: 20),
+                        Radio<int>(
                           value: 3,
-                          fillColor: WidgetStateProperty.all<Color>(Colors.red),
+                          fillColor: WidgetStateProperty.all<Color>(
+                            Colors.grey,
+                          ),
                         ),
+                        Text('Both', style: TextStyle(color: Colors.grey)),
+                      ],
+                    ),
+                  ),
+                  Row(
+                    children: [
+                      const Text(
+                        'Regions',
+                        style: TextStyle(color: Colors.red),
+                      ),
+                      const SizedBox(width: 10),
+                      Expanded(
+                        child: Container(height: 1.0, color: Colors.red),
+                      ),
+                      const SizedBox(width: 10),
+                    ],
+                  ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.end,
+                    children: [
+                      const Text('All', style: TextStyle(color: Colors.red)),
+                      Checkbox(
+                        value: data.allChecked,
+                        activeColor: Colors.red,
+                        onChanged: (_) {
+                          setState(() => data.toggleAllChecked());
+                        },
                       ),
                     ],
                   ),
-                ),
-              ],
+                  Wrap(
+                    spacing: 8.0,
+                    runSpacing: 4.0,
+                    children: [
+                      for (var nationality in data.nationalities.entries)
+                        Row(
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            Checkbox(
+                              value: nationality.value,
+                              activeColor: Colors.grey,
+                              onChanged: (value) {
+                                setState(() {
+                                  data.nationalities[nationality.key] = value!;
+                                });
+                              },
+                            ),
+                            Text(
+                              nationality.key,
+                              style: TextStyle(color: Colors.grey),
+                            ),
+                          ],
+                        ),
+                    ],
+                  ),
+                ],
+              ),
             ),
           ),
         );
