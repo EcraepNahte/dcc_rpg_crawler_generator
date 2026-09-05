@@ -6,7 +6,8 @@ class CrawlerIdentificationService {
   static int rolls = 3;
 
   static int generateCrawlerNumber() {
-    return Random().nextInt(crawlersInDungeon);
+    return Random().nextInt(crawlersInDungeon - 1) +
+        1; // Add one to ensure we don't get 0
     // TODO: make a loop and blacklist known crawler numbers from the books.
   }
 
@@ -37,22 +38,14 @@ class CrawlerIdentificationService {
 
   static int _generateLetterCount(int crawlerNumber) {
     // Use a probability where letters in their last name go up as their crawler number goes up.
-    int maxLetters = 10;
-    double logProgress = log(crawlerNumber) / log(crawlersInDungeon);
-    double linearProgress = crawlerNumber / crawlersInDungeon;
-    double blendFactor =
-        0.1; // Adjust to control blend between linear and log. Higher = more curve
-    double progressToMax =
-        (1.0 - blendFactor) * linearProgress + blendFactor * logProgress;
-    int bias = (progressToMax * maxLetters).round();
-    int rolls = 4;
-    int lettersToIncludeInLastName = Random().nextInt(bias + 1);
+    double progressToMax = log(crawlerNumber) / log(crawlersInDungeon);
 
-    for (int i = 1; i < rolls; i++) {
-      lettersToIncludeInLastName = max(
-        lettersToIncludeInLastName,
-        Random().nextInt(bias + 1),
-      );
+    int lettersToIncludeInLastName = 0;
+    double rand = Random().nextDouble();
+    while (progressToMax > rand) {
+      lettersToIncludeInLastName++;
+      progressToMax *= .95;
+      rand = Random().nextDouble();
     }
 
     return lettersToIncludeInLastName;
