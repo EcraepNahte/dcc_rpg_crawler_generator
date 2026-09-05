@@ -44,7 +44,7 @@ class CrawlerIdentificationService {
     double rand = Random().nextDouble();
     while (progressToMax > rand) {
       lettersToIncludeInLastName++;
-      progressToMax *= .95;
+      progressToMax *= .9;
       rand = Random().nextDouble();
     }
 
