@@ -1,9 +1,11 @@
-import 'package:dcc_rpg_crawler_generator/pages/random_crawler_page.dart';
+import 'package:dcc_rpg_crawler_generator/view/random_crawler_page.dart';
+import 'package:dcc_rpg_crawler_generator/viewmodel/filter_data.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:provider/provider.dart';
 
 void main() {
-  runApp(const MainApp());
+  runApp(ChangeNotifierProvider(create: (_) => FilterData(), child: MainApp()));
 }
 
 class MainApp extends StatelessWidget {

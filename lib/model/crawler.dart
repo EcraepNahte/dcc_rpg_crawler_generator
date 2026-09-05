@@ -50,7 +50,6 @@ class Crawler {
         country: json['location']['country'] ?? '',
       );
     } catch (e) {
-      print('Error parsing Crawler from JSON: $e');
       return null;
     }
   }
