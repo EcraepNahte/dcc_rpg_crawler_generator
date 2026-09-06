@@ -1,3 +1,4 @@
+import 'package:dcc_rpg_crawler_generator/model/stat_block.dart';
 import 'package:dcc_rpg_crawler_generator/services/crawler_identification_service.dart';
 
 class Crawler {
@@ -11,6 +12,7 @@ class Crawler {
   final String city;
   final String state;
   final String country;
+  final StatBlock statBlock;
 
   Crawler({
     required this.crawlerName,
@@ -23,6 +25,7 @@ class Crawler {
     required this.city,
     required this.state,
     required this.country,
+    required this.statBlock,
   });
 
   static Crawler? fromJson(Map<String, dynamic> json) {
@@ -48,6 +51,7 @@ class Crawler {
         city: json['location']['city'] ?? '',
         state: json['location']['state'] ?? '',
         country: json['location']['country'] ?? '',
+        statBlock: CrawlerIdentificationService.generateCrawlerStats(),
       );
     } catch (e) {
       return null;

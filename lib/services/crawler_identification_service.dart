@@ -1,5 +1,7 @@
 import 'dart:math';
 
+import 'package:dcc_rpg_crawler_generator/model/stat_block.dart';
+
 class CrawlerIdentificationService {
   static int crawlersInDungeon =
       12935453; // This is the number of crawlers that entered the dungeon in Dungeon Crawler Carl
@@ -34,6 +36,16 @@ class CrawlerIdentificationService {
     }
 
     return crawlerName;
+  }
+
+  static StatBlock generateCrawlerStats() {
+    return StatBlock(
+      strength: Random().nextInt(4) + 2,
+      intelligence: Random().nextInt(4) + 2,
+      constitution: Random().nextInt(4) + 2,
+      dexterity: Random().nextInt(4) + 2,
+      charisma: Random().nextInt(4) + 2,
+    );
   }
 
   static int _generateLetterCount(int crawlerNumber) {

@@ -115,6 +115,92 @@ class RandomCrawlerPageState extends State<RandomCrawlerPage> {
                           context,
                         ).textTheme.bodyMedium!.copyWith(color: Colors.grey),
                       ),
+                      Row(
+                        mainAxisSize: MainAxisSize.min,
+                        spacing: 16.0,
+                        children: [
+                          Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              const Text(
+                                'STR',
+                                style: TextStyle(color: Colors.red),
+                              ),
+                              Text(
+                                '${_crawler!.statBlock.strength}',
+                                style: Theme.of(context)
+                                    .textTheme
+                                    .headlineSmall!
+                                    .copyWith(color: Colors.yellow),
+                              ),
+                            ],
+                          ),
+                          Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              const Text(
+                                'INT',
+                                style: TextStyle(color: Colors.red),
+                              ),
+                              Text(
+                                '${_crawler!.statBlock.intelligence}',
+                                style: Theme.of(context)
+                                    .textTheme
+                                    .headlineSmall!
+                                    .copyWith(color: Colors.yellow),
+                              ),
+                            ],
+                          ),
+                          Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              const Text(
+                                'CON',
+                                style: TextStyle(color: Colors.red),
+                              ),
+                              Text(
+                                '${_crawler!.statBlock.constitution}',
+                                style: Theme.of(context)
+                                    .textTheme
+                                    .headlineSmall!
+                                    .copyWith(color: Colors.yellow),
+                              ),
+                            ],
+                          ),
+                          Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              const Text(
+                                'DEX',
+                                style: TextStyle(color: Colors.red),
+                              ),
+                              Text(
+                                '${_crawler!.statBlock.dexterity}',
+                                style: Theme.of(context)
+                                    .textTheme
+                                    .headlineSmall!
+                                    .copyWith(color: Colors.yellow),
+                              ),
+                            ],
+                          ),
+                          Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              const Text(
+                                'CHA',
+                                style: TextStyle(color: Colors.red),
+                              ),
+                              Text(
+                                '${_crawler!.statBlock.charisma}',
+                                style: Theme.of(context)
+                                    .textTheme
+                                    .headlineSmall!
+                                    .copyWith(color: Colors.yellow),
+                              ),
+                            ],
+                          ),
+                        ],
+                      ),
                     ],
                   ),
                 SizedBox(height: 20),
