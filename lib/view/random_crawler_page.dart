@@ -53,6 +53,38 @@ class RandomCrawlerPageState extends State<RandomCrawlerPage> {
     );
   }
 
+  Widget _createHealthBarSlot(int slot, Crawler crawler) {
+    Color color = Colors.green;
+    double hpFraction = crawler.currentHpBars / crawler.maxHpBars;
+    if (hpFraction <= 1 / 3) {
+      color = Colors.red;
+    } else if (hpFraction <= 2 / 3) {
+      color = Colors.yellow;
+    }
+
+    if (slot >= crawler.currentHpBars) {
+      color = Colors.grey;
+    }
+
+    return GestureDetector(
+      onTap: () {
+        setState(() => crawler.currentHpBars = slot + 1);
+      },
+      child: Container(
+        width: 40,
+        height: 30,
+        decoration: BoxDecoration(
+          color: color,
+          border: Border.all(
+            color: const Color.fromARGB(255, 39, 38, 38),
+            width: 2,
+          ),
+        ),
+        child: Center(child: Text('${crawler.statBlock.constitution}')),
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -78,6 +110,14 @@ class RandomCrawlerPageState extends State<RandomCrawlerPage> {
                     context,
                   ).textTheme.headlineLarge!.copyWith(color: Colors.amber),
                 ),
+                Row(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    for (int i = 0; i < _crawler!.maxHpBars; i++)
+                      _createHealthBarSlot(i, _crawler!),
+                  ],
+                ),
+                SizedBox(height: 10),
                 if (_crawler != null)
                   Column(
                     crossAxisAlignment: CrossAxisAlignment.center,
@@ -117,6 +157,31 @@ class RandomCrawlerPageState extends State<RandomCrawlerPage> {
                       ),
                       Row(
                         mainAxisSize: MainAxisSize.min,
+                        spacing: 12.0,
+                        children: [
+                          Text(
+                            'Level: ${_crawler!.level}',
+                            style: TextStyle(color: Colors.yellow),
+                          ),
+                          Text('|', style: TextStyle(color: Colors.red)),
+                          Text(
+                            'Mana: ${_crawler!.maxMana}',
+                            style: TextStyle(color: Colors.yellow),
+                          ),
+                          Text('|', style: TextStyle(color: Colors.red)),
+                          Text(
+                            'Surprise: ${_crawler!.baseSurprise} + F',
+                            style: TextStyle(color: Colors.yellow),
+                          ),
+                          Text('|', style: TextStyle(color: Colors.red)),
+                          Text(
+                            'Evade: ${_crawler!.baseEvade} + F',
+                            style: TextStyle(color: Colors.yellow),
+                          ),
+                        ],
+                      ),
+                      Row(
+                        mainAxisSize: MainAxisSize.min,
                         spacing: 16.0,
                         children: [
                           Column(
@@ -127,7 +192,7 @@ class RandomCrawlerPageState extends State<RandomCrawlerPage> {
                                 style: TextStyle(color: Colors.red),
                               ),
                               Text(
-                                '${_crawler!.statBlock.strength}',
+                                '${_crawler!.statBlock.strength} (+${_crawler!.strMod})',
                                 style: Theme.of(context)
                                     .textTheme
                                     .headlineSmall!
@@ -143,7 +208,7 @@ class RandomCrawlerPageState extends State<RandomCrawlerPage> {
                                 style: TextStyle(color: Colors.red),
                               ),
                               Text(
-                                '${_crawler!.statBlock.intelligence}',
+                                '${_crawler!.statBlock.intelligence} (+${_crawler!.intMod})',
                                 style: Theme.of(context)
                                     .textTheme
                                     .headlineSmall!
@@ -159,7 +224,7 @@ class RandomCrawlerPageState extends State<RandomCrawlerPage> {
                                 style: TextStyle(color: Colors.red),
                               ),
                               Text(
-                                '${_crawler!.statBlock.constitution}',
+                                '${_crawler!.statBlock.constitution} (+${_crawler!.conMod})',
                                 style: Theme.of(context)
                                     .textTheme
                                     .headlineSmall!
@@ -175,7 +240,7 @@ class RandomCrawlerPageState extends State<RandomCrawlerPage> {
                                 style: TextStyle(color: Colors.red),
                               ),
                               Text(
-                                '${_crawler!.statBlock.dexterity}',
+                                '${_crawler!.statBlock.dexterity} (+${_crawler!.dexMod})',
                                 style: Theme.of(context)
                                     .textTheme
                                     .headlineSmall!
@@ -191,7 +256,7 @@ class RandomCrawlerPageState extends State<RandomCrawlerPage> {
                                 style: TextStyle(color: Colors.red),
                               ),
                               Text(
-                                '${_crawler!.statBlock.charisma}',
+                                '${_crawler!.statBlock.charisma} (+${_crawler!.chaMod})',
                                 style: Theme.of(context)
                                     .textTheme
                                     .headlineSmall!

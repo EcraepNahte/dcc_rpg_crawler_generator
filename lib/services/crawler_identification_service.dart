@@ -40,11 +40,11 @@ class CrawlerIdentificationService {
 
   static StatBlock generateCrawlerStats() {
     return StatBlock(
-      strength: Random().nextInt(4) + 2,
-      intelligence: Random().nextInt(4) + 2,
-      constitution: Random().nextInt(4) + 2,
-      dexterity: Random().nextInt(4) + 2,
-      charisma: Random().nextInt(4) + 2,
+      strength: Random().nextInt(5) + 2,
+      intelligence: Random().nextInt(5) + 2,
+      constitution: Random().nextInt(5) + 2,
+      dexterity: Random().nextInt(5) + 2,
+      charisma: Random().nextInt(5) + 2,
     );
   }
 
