@@ -39,7 +39,7 @@ class RandomCrawlerPageState extends State<RandomCrawlerPage> {
           jsonResponse['results'].isNotEmpty) {
         Map<String, dynamic> userJson = jsonResponse['results'][0];
         setState(() {
-          _crawler = Crawler.fromJson(userJson);
+          _crawler = Crawler.fromJson(userJson, data?.floor ?? 1);
         });
       }
     }
@@ -80,13 +80,15 @@ class RandomCrawlerPageState extends State<RandomCrawlerPage> {
             width: 2,
           ),
         ),
-        child: Center(child: Text('${crawler.statBlock.constitution}')),
+        child: Center(child: Text('${crawler.conMod}')),
       ),
     );
   }
 
   @override
   Widget build(BuildContext context) {
+    final List<int> items = List.generate(18, (i) => i + 1);
+
     return Scaffold(
       floatingActionButton: FloatingActionButton.extended(
         backgroundColor: Colors.blueGrey,
@@ -110,18 +112,18 @@ class RandomCrawlerPageState extends State<RandomCrawlerPage> {
                     context,
                   ).textTheme.headlineLarge!.copyWith(color: Colors.amber),
                 ),
-                Row(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    for (int i = 0; i < _crawler!.maxHpBars; i++)
-                      _createHealthBarSlot(i, _crawler!),
-                  ],
-                ),
-                SizedBox(height: 10),
                 if (_crawler != null)
                   Column(
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
+                      Row(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          for (int i = 0; i < _crawler!.maxHpBars; i++)
+                            _createHealthBarSlot(i, _crawler!),
+                        ],
+                      ),
+                      SizedBox(height: 10),
                       Image.network(
                         _crawler!.imageUrl,
                         webHtmlElementStrategy: WebHtmlElementStrategy.prefer,
@@ -129,19 +131,63 @@ class RandomCrawlerPageState extends State<RandomCrawlerPage> {
                         width: 200,
                         fit: BoxFit.fill,
                       ),
-                      Text(
-                        'Crawler ${_crawler!.crawlerName}',
-                        style: Theme.of(context).textTheme.headlineLarge!
-                            .copyWith(
-                              fontWeight: FontWeight.bold,
-                              color: Colors.yellow,
-                            ),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        spacing: 8.0,
+                        children: [
+                          Text(
+                            'Crawler ${_crawler!.crawlerName}',
+                            style: Theme.of(context).textTheme.headlineLarge!
+                                .copyWith(
+                                  fontWeight: FontWeight.bold,
+                                  color: Colors.yellow,
+                                ),
+                          ),
+                          Text(
+                            '#${formatter.format(_crawler!.crawlerNumber)}',
+                            style: Theme.of(context).textTheme.headlineSmall!
+                                .copyWith(color: Colors.red),
+                          ),
+                        ],
                       ),
-                      Text(
-                        '#${formatter.format(_crawler!.crawlerNumber)}',
-                        style: Theme.of(
-                          context,
-                        ).textTheme.headlineSmall!.copyWith(color: Colors.red),
+                      Row(
+                        mainAxisSize: MainAxisSize.min,
+                        spacing: 12.0,
+                        children: [
+                          Text(
+                            'Level: ${_crawler!.level}',
+                            style: TextStyle(
+                              color: Colors.yellow,
+                              fontSize: 24.0,
+                            ),
+                          ),
+                          Text(
+                            '|',
+                            style: TextStyle(color: Colors.red, fontSize: 16.0),
+                          ),
+                          Text(
+                            _crawler!.crawlerRace,
+                            style: TextStyle(
+                              color: Colors.yellow,
+                              fontSize: 24.0,
+                            ),
+                          ),
+                          if (_crawler!.crawlerClass != '')
+                            Text(
+                              '|',
+                              style: TextStyle(
+                                color: Colors.red,
+                                fontSize: 24.0,
+                              ),
+                            ),
+                          Text(
+                            _crawler!.crawlerClass,
+                            style: TextStyle(
+                              color: Colors.yellow,
+                              fontSize: 24.0,
+                            ),
+                          ),
+                        ],
                       ),
                       Text(
                         '${_crawler!.firstName} ${_crawler!.lastName} | ${_crawler!.age} ${_crawler!.isMale ? 'M' : 'F'}',
@@ -159,11 +205,6 @@ class RandomCrawlerPageState extends State<RandomCrawlerPage> {
                         mainAxisSize: MainAxisSize.min,
                         spacing: 12.0,
                         children: [
-                          Text(
-                            'Level: ${_crawler!.level}',
-                            style: TextStyle(color: Colors.yellow),
-                          ),
-                          Text('|', style: TextStyle(color: Colors.red)),
                           Text(
                             'Mana: ${_crawler!.maxMana}',
                             style: TextStyle(color: Colors.yellow),
@@ -282,6 +323,50 @@ class RandomCrawlerPageState extends State<RandomCrawlerPage> {
                   icon: Icon(Icons.refresh),
                   label: Text('New Crawler'),
                   onPressed: () => _generateRandomCrawler(data),
+                ),
+                SizedBox(height: 16.0),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Text(
+                      'Floor: ',
+                      style: Theme.of(
+                        context,
+                      ).textTheme.headlineMedium!.copyWith(color: Colors.grey),
+                    ),
+                    Container(
+                      decoration: BoxDecoration(
+                        color: Colors.grey,
+                        shape: BoxShape.rectangle,
+                        borderRadius: BorderRadius.all(Radius.circular(16.0)),
+                      ),
+                      height: 32.0,
+                      child: Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                        child: DropdownButtonHideUnderline(
+                          child: DropdownButton<int>(
+                            dropdownColor: Colors.grey,
+                            value: data.floor,
+                            icon: const Icon(Icons.arrow_drop_down),
+                            elevation: 16,
+                            onChanged: (int? newValue) {
+                              if (newValue != null) {
+                                data.setFloor(newValue);
+                              }
+                            },
+                            items: items.map<DropdownMenuItem<int>>((
+                              int value,
+                            ) {
+                              return DropdownMenuItem<int>(
+                                value: value,
+                                child: Text(value.toString()),
+                              );
+                            }).toList(),
+                          ),
+                        ),
+                      ),
+                    ),
+                  ],
                 ),
               ],
             ),

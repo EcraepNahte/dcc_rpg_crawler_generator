@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:dcc_rpg_crawler_generator/model/stat_block.dart';
 import 'package:dcc_rpg_crawler_generator/services/crawler_identification_service.dart';
 
@@ -12,9 +14,11 @@ class Crawler {
   final String city;
   final String state;
   final String country;
-  final int level;
+  int level;
   final StatBlock statBlock;
   final int maxHpBars = 10;
+  String crawlerRace = 'Human';
+  String crawlerClass = '';
 
   int get strMod => _getMod(statBlock.strength);
   int get intMod => _getMod(statBlock.intelligence);
@@ -42,13 +46,53 @@ class Crawler {
     required this.country,
     required this.statBlock,
     this.level = 1,
+    int? floor,
   }) {
-    _initStats();
+    _initStats(floor);
   }
 
-  void _initStats() {
+  void _initStats(int? floor) {
+    if (floor != null) {
+      if (floor == 1) {
+        level = Random().nextInt(5) + 1;
+      } else if (floor == 2) {
+        level = Random().nextInt(5) + 6;
+      } else {
+        final int levelMin = (floor - 2) * 10 - 5;
+        final int levelMax = (floor - 2) * 10 + 10;
+
+        level = Random().nextInt(levelMax - levelMin) + levelMin;
+      }
+    }
+
+    for (int i = 0; i < level * 3; i++) {
+      _updateRandomStat();
+    }
+
+    if (floor != null ? floor >= 3 : false) {
+      crawlerClass = CrawlerIdentificationService.generateRandomClass();
+      crawlerRace = CrawlerIdentificationService.generateRandomRace();
+    }
+
     currentHpBars = maxHpBars;
     currentMana = maxMana;
+  }
+
+  void _updateRandomStat() {
+    final int rand = Random().nextInt(5);
+
+    switch (rand) {
+      case 0:
+        statBlock.strength++;
+      case 1:
+        statBlock.intelligence++;
+      case 2:
+        statBlock.constitution++;
+      case 3:
+        statBlock.dexterity++;
+      case 4:
+        statBlock.charisma++;
+    }
   }
 
   int _getMod(int stat) {
@@ -77,7 +121,7 @@ class Crawler {
     }
   }
 
-  static Crawler? fromJson(Map<String, dynamic> json) {
+  static Crawler? fromJson(Map<String, dynamic> json, int? floor) {
     try {
       String crawlerFirstName = json['name']['first'] ?? '';
       String crawlerLastName = json['name']['last'] ?? '';
@@ -101,6 +145,7 @@ class Crawler {
         state: json['location']['state'] ?? '',
         country: json['location']['country'] ?? '',
         statBlock: CrawlerIdentificationService.generateCrawlerStats(),
+        floor: floor,
       );
     } catch (e) {
       return null;

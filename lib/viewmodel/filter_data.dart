@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 class FilterData extends ChangeNotifier {
   int _genderOption = 3;
+  int _floor = 1;
   final Map<String, bool> _nationalities = {
     'AU': true,
     'BR': true,
@@ -27,7 +28,9 @@ class FilterData extends ChangeNotifier {
   };
 
   int get genderOption => _genderOption;
+  int get floor => _floor;
   Map<String, bool> get nationalities => _nationalities;
+
   bool get allChecked {
     for (var nationality in _nationalities.entries) {
       if (nationality.value == false) {
@@ -42,8 +45,17 @@ class FilterData extends ChangeNotifier {
       _genderOption = 3;
     } else {
       _genderOption = value;
-      notifyListeners();
     }
+    notifyListeners();
+  }
+
+  void setFloor(int? value) {
+    if (value == null) {
+      _floor = 1;
+    } else {
+      _floor = value;
+    }
+    notifyListeners();
   }
 
   void toggleAllChecked() {
@@ -52,6 +64,7 @@ class FilterData extends ChangeNotifier {
     } else {
       _nationalities.updateAll((_, _) => true);
     }
+    notifyListeners();
   }
 
   String queryParams() {

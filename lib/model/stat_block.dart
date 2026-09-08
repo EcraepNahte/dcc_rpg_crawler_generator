@@ -1,15 +1,15 @@
 class StatBlock {
-  final int strength;
-  final int intelligence;
-  final int constitution;
-  final int dexterity;
-  final int charisma;
+  int strength;
+  int intelligence;
+  int constitution;
+  int dexterity;
+  int charisma;
 
   StatBlock({
-    required this.strength,
-    required this.intelligence,
-    required this.constitution,
-    required this.dexterity,
-    required this.charisma,
+    this.strength = 1,
+    this.intelligence = 1,
+    this.constitution = 1,
+    this.dexterity = 1,
+    this.charisma = 1,
   });
 }

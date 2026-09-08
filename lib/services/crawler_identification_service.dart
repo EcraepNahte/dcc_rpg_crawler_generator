@@ -7,6 +7,94 @@ class CrawlerIdentificationService {
       12935453; // This is the number of crawlers that entered the dungeon in Dungeon Crawler Carl
   static int rolls = 3;
 
+  static final races = [
+    'Amazonian',
+    'Arachnid',
+    'Cat',
+    'Cat Girl/Cat Boy',
+    'Changbi Demon',
+    'Changeling',
+    'Crocodilian',
+    'Doppelgänger',
+    'Dwarf, Classic',
+    'Dwarf, Fathom',
+    'Elf, High',
+    'Elf, City',
+    'Elf, Night',
+    'Frost Maiden',
+    'Human',
+    'Igneous',
+    'Lajabless',
+    'Obsidian Butterfly',
+    'Primal',
+    'Rat Hooligan',
+    'Sasquatch',
+    'Tetrakai',
+    'Tigran',
+    'Bune',
+    'Caprid',
+    'Grulke',
+    'Hobgoblin',
+    'Pocket Kuma',
+    'Pterolykos',
+    'Skyfowl',
+  ];
+
+  static final classes = [
+    "Boring ol' Alchemist",
+    "Alchemist",
+    "Douchy Wizard School Wand-Maker",
+    "Infernocrafter",
+    "Prison Tattoo Artist",
+    "Boring ol' Barbarian",
+    "Gladiator",
+    "Harii",
+    "Feral Cat Berserker",
+    "Shieldmaiden",
+    "Boring ol' Bard",
+    "Artist Alley Mogul",
+    "Former Child Actor",
+    "Necrobard",
+    "Poet Laureate",
+    "Professional Roadie",
+    "Spellbinder",
+    "Boring ol' Cleric",
+    "Black Inquisitor General",
+    "Santero",
+    "Boring ol' Druid",
+    "Herbalist",
+    "Lifebringer",
+    "Physicker",
+    "Shepherd",
+    "Boring ol' Fighter",
+    "Pit Fighter",
+    "Shotgun Messenger",
+    "Straight To DVD Action Hero",
+    "Sword and Boarder",
+    "Monster Truck Driver",
+    "Zulu Warrior",
+    "Boring ol' Mage",
+    "Blizzardmancer",
+    "Crisper",
+    "Fire Spritualist",
+    "Forsaken Arialist",
+    "Necromancer",
+    "Boring ol' Monk",
+    "Elemental Monk",
+    "Prize Fighter",
+    "Spirit Healer",
+    "Street Monk",
+    "Boring ol' Paladin",
+    "Cavalier",
+    "Sacred Paladin",
+    "Boring ol' Rogue",
+    "Bomb Squad Tech",
+    "Compensated Anarchist",
+    "High Rise Grifter",
+    "Identity Theif",
+    "Swashbuckler",
+  ];
+
   static int generateCrawlerNumber() {
     return Random().nextInt(crawlersInDungeon - 1) +
         1; // Add one to ensure we don't get 0
@@ -46,6 +134,14 @@ class CrawlerIdentificationService {
       dexterity: Random().nextInt(5) + 2,
       charisma: Random().nextInt(5) + 2,
     );
+  }
+
+  static String generateRandomRace() {
+    return races.elementAt(Random().nextInt(races.length));
+  }
+
+  static String generateRandomClass() {
+    return classes.elementAt(Random().nextInt(classes.length));
   }
 
   static int _generateLetterCount(int crawlerNumber) {
